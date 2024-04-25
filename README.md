@@ -220,7 +220,6 @@ const menuItems = [
     onMenu: false
   }
 ];
-
 // Route open to any role
 router.get("/menu-items", 
 [keycloak.protect()],
@@ -232,7 +231,6 @@ async ( req, res, next) => {
       }
     });
 
-    // Return filtered data
     res.json(filtered);
   } catch (error) {
     return next(error);
