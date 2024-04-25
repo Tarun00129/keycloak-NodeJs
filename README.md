@@ -1,5 +1,7 @@
 Hii,
 
+you can access this doc hear https://medium.com/@erinlim555/simple-keycloak-rbac-with-node-js-express-js-bc9031c9f1ba with Pictures. 
+
 Today we’re going to be exploring how to build a simple Role Based Access Control (RBAC) for your Node.js & Express.js API using Keycloak for authentication.
 
 While searching for a solution to secure my Node + Express APIs with Keycloak authentication, I came across the Keycloak Node.js Adapter, keycloak-connect. While it does help simplify the process of verifying Bearer tokens that came with every request, however trying to verify if a user has a specific role to access certain routes quickly became slightly more complicated.
