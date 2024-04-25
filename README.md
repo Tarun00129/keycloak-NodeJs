@@ -230,7 +230,6 @@ async ( req, res, next) => {
         return item;
       }
     });
-
     res.json(filtered);
   } catch (error) {
     return next(error);
