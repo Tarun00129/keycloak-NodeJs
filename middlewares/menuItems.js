@@ -40,7 +40,8 @@ const menuItems = [
 
 // Route open to any role
 router.get("/menu-items", 
-[keycloak.protect()],
+// [keycloak.protect('realm:user'),keycloak.protect('realm:admin')],
+[keycloak.protect('realm:user'&&'realm:admin'),],
 async ( req, res, next) => {
   try {
     let filtered = menuItems.filter(item => {
