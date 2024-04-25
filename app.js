@@ -25,9 +25,23 @@ app.use(cors());
 app.use('/api',menuItems);
 app.use(errorHandler);
 
-app.get('/api/secure', keycloak.protect('realm:admin'), (req, res) => {
-  res.json({ user: "**user**", project: 'keycloak_project', release: '1.0.0', description: 'API for appuser' });
-})
+app.get('/api/secure', keycloak.protect(), (req, res) => {
+  const isAdmin = req.kauth.grant.access_token.hasRealmRole('admin');
+  const isUser = req.kauth.grant.access_token.hasRealmRole('user');
+
+  if (isAdmin && isUser) {
+    // console.log("Admin-User");
+    res.json({ user: "**Admin-User**", project: 'keycloak_project', release: '1.0.0', description: 'API for appuser' });
+  } else if (isAdmin) {
+    // console.log("Admin");
+    res.json({ user: "**Admin**", project: 'keycloak_project', release: '1.0.0', description: 'API for appuser' });
+  } else if (isUser) {
+    // console.log("User");
+    res.json({ user: "**user**", project: 'keycloak_project', release: '1.0.0', description: 'API for appuser' });
+  } else {
+    res.status(403).json({ message: 'Forbidden' });
+  }
+});
 
 app.listen(port, () => {
   console.log(`Server Started at ${port}`);
