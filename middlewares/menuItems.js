@@ -40,8 +40,7 @@ const menuItems = [
 
 // Route open to any role
 router.get("/menu-items", 
-// [keycloak.protect('realm:user'),keycloak.protect('realm:admin')],
-[keycloak.protect('realm:user'&&'realm:admin'),],
+[keycloak.protect('realm:user')],
 async ( req, res, next) => {
   try {
     let filtered = menuItems.filter(item => {
@@ -56,5 +55,25 @@ async ( req, res, next) => {
     return next(error);
   }
 });
+function checkRole(roles) {
+  return function(req, res, next) {
+    if (req.kauth && req.kauth.grant.access_token && req.kauth.grant.access_token) {
+      const roles2 = req.kauth.grant.access_token.content.realm_access.roles;
+      if (roles.some(role => roles2.includes(role))) {
+        next();
+      } else {
+        res.status(403).json({ message: 'Forbidden' });
+      }
+    } else {
+      res.status(401).json({ message: 'Unauthorized' });
+    }
+  };
+}
+
+// Protect the API with the 'admin' or 'user' roles
+router.get('/protected', checkRole(['admin', 'user']), (req, res) => {
+  res.json({ message: 'This is a protected API' });
+});
+
 
 module.exports = router;
