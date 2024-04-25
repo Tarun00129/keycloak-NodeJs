@@ -2,8 +2,9 @@ const cors = require('cors');
 const express = require('express');
 const keycloak = require('./middlewares/keycloak'); // Keycloak
 const menuItems = require('./middlewares/menuItems');
+const dotenv = require('dotenv').config();
 
-const port = 8000;
+const port = process.env.PORT;
 
 // Routes
 const testRoutes = require('./routes/test');
